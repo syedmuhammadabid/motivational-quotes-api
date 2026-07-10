@@ -4,6 +4,8 @@ A simple REST API built with **FastAPI** that serves random motivational quotes,
 
 **Live Demo:** [https://motivational-quotes.up.railway.app/](https://motivational-quotes.up.railway.app/)
 
+![Demo](demo.gif)
+
 ## Features
 
 - Get a random motivational quote with one click
