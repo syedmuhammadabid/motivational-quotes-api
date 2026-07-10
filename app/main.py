@@ -1,4 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from pathlib import Path
+
 from app.quotes import quotes, get_random_quote
 
 app = FastAPI(
@@ -7,13 +12,20 @@ app = FastAPI(
     version="1.0.0",
 )
 
-@app.get("/")
-def root():
-    return {"message": "Welcome to the Motivational Quotes API! Hit /quote for inspiration."}
+BASE_DIR = Path(__file__).resolve().parent
+
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+templates = Jinja2Templates(directory=BASE_DIR / "templates")
+
+
+@app.get("/", response_class=HTMLResponse)
+def root(request: Request):
+    return templates.TemplateResponse(request, "index.html")
 
 @app.get("/quote")
 def random_quote():
     return get_random_quote()
+
 
 @app.get("/quotes")
 def all_quotes():
